@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>BALLOON</title>
+	<style>
+		#balloon {
+			font-size: 10px;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+		}
+	</style>
+</head>
+<body>
+	<div id="balloon">🎈</div>
+<script>
+	let balloon = document.querySelector("div");
+	//balloon.style.fontSize = 200 + "px";
+	let size = 10
+	function resize(event) {
+		if (event.key == "ArrowUp"){
+			//console.log(balloon.style.fontSize);
+			// Increasing size by 10 percent
+			size = size*0.1 + size;
+			event.preventDefault();
+			balloon.style.fontSize = size + "px";
+			
+		}
+		else if (event.key == "ArrowDown") {
+			// Decreasing size by 10 percent
+			size = size - size*0.1;
+			event.preventDefault();
+			balloon.style.fontSize = size + "px";
+		}
+
+		if (size >= 200){
+			// Removing event listener
+			balloon.textContent = "💥"
+			window.removeEventListener("keydown",resize);
+		}
+	}
+	window.addEventListener("keydown",resize);
+
+	
+</script>
+</body>
+</html>

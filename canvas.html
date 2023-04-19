@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Canvas</title>
+</head>
+<body>
+	<!--p>Normal HTML here</p>
+	<svg xmlns="http://www.w3.org/2000/svg">
+	   <circle  r="50" cx="50" cy="50" fill="red" stroke="black"/>	
+	   <rect x="100" y="5" width="90" height="90" stroke="blue" fill="none" />
+	</svg-->
+
+	<p>Before canvas.</p>
+	<p>Before canvas.</p>
+	<!--canvas width="400" height="160"></canvas>
+	<canvas width="400" height="400"></canvas-->
+	<canvas width="600" height="300"></canvas>
+	<p>After canvas</p>
+
+	<script type="text/javascript">
+		/*let circle = document.querySelector("circle");
+		circle.setAttribute("fill", "cyan");
+		let rect = document.querySelector("rect");
+		rect.setAttribute("stroke", "yellow"); 
+		let canvas = document.querySelector("canvas");
+		let context = canvas.getContext("2d");
+		let context1 = canvas.getContext("2d");
+		context1.strokeStyle = "blue";
+		context1.strokeRect(150,5,50,50);
+		context1.lineWidth = 5;
+		context1.beginPath();
+		context1.arc(250,50,50,0,2*Math.PI);
+		context1.stroke();
+		context.fillStyle = "red";
+		context.fillRect(10, 10, 100, 50); */
+		let cx = document.querySelector("canvas").getContext("2d");
+		//let cx1 = document.querySelector("canvas").getContext("2d");
+		/*cx.beginPath(); 
+		for (let y = 10; y < 100; y += 10) {
+			cx.moveTo(10, y + 10);
+			cx.lineTo(90,y);
+		}
+		cx.strokeStyle = "red";
+		cx.stroke() ;
+
+		cx.beginPath();
+		cx.moveTo(50, 100);
+		cx.lineTo(10, 160);
+		//cx.moveTo(10, 140);
+		cx.lineTo(100, 160);
+
+		cx.strokeStyle = "blue";
+		cx.closePath();
+		cx.stroke(); */
+
+		//cx.moveTo(10,90);
+		/*cx.quadraticCurveTo(60, 10, 90, 90);
+		cx.lineTo(60, 10);
+		cx.bezierCurveTo(10, 10, 90, 10, 50, 90);
+		cx.lineTo(90,10);
+		cx.lineTo(10,10);
+		cx.closePath();
+		
+		cx.arc(50, 50, 40, 0, 6.5);
+		cx.stroke();
+		cx1.beginPath();
+		cx1.arc(150, 50, 40, -0.5 * Math.PI, 0);
+
+		cx1.stroke();
+		*/
+		const results = [
+		{name: "Satisfied", count: 1043, color: "lightblue"},
+		{name: "Neutral", count: 563, color: "lightgreen"},
+		{name: "Unsatisfied", count: 510, color: "pink"},
+		{name: "Lala", count: 800, color: "brown"},
+		{name: "No comment", count: 175, color: "silver"}
+		];
+
+		let total = results.reduce((sum, {count}) => sum + count, 0);
+		// Start at the top 
+		let currentAngle = -0.5 * Math.PI;
+		for (let result of results) {
+			let sliceAngle = (result.count / total) * 2 * Math.PI;
+			cx.beginPath();
+			cx.arc(250, 150, 100, currentAngle, currentAngle + sliceAngle);
+			let middleAngle = currentAngle + 0.5 * sliceAngle;
+			let textX = Math.cos(middleAngle) * 120 + 255;
+			let textY = Math.sin(middleAngle) * 120 + 155;
+			currentAngle += sliceAngle;
+			cx.lineTo(250, 150);
+			console.log(Math.cos(middleAngle));
+			cx.font = "italic 18px Georgia";
+			cx.fillStyle = result.color;
+			cx.fillText(result.name, textX, textY);
+			if (Math.cos(middleAngle) >= 1) cx.textAlign = "left";
+			else cx.textAlign = "right";
+			cx.textBaseline = "middle";
+			cx.fill();
+			console.log(cx);
+
+		} 
+		let img = document.createElement("img");
+		img.src = "img/player.png";
+		/*
+		img.addEventListener("load", () => {
+			for (let x = 10; x < 200; x += 30) {;
+				cx.drawImage(img, 144, 0, 24, 30,0,30,24,30);
+			}
+		}); 
+		
+		function flipHorizontally(context, around) {
+			context.translate(around, 0);
+			context.scale(-1, 1);
+			context.translate(-around, 0);
+		}
+
+		let spriteW = 24, spriteH = 30;
+		flipHorizontally(cx, 100 + spriteW / 2);
+		//cx.scale(-1,1);
+		
+		img.addEventListener("load", () => {
+			let cycle = 0;
+			setInterval(() => {
+
+				cx.clearRect(100,0, spriteW, spriteH);
+				
+
+				cx.drawImage(img, cycle * spriteW, 0, spriteW, spriteH, 100, 0, spriteW, spriteH );
+				cycle = (cycle + 1) % 8;
+			}, 120);
+		});
+		
+		cx.scale(3, .5);
+		cx.beginPath();
+		cx.arc(50, 50, 40, 0, 7);
+		cx.lineWidth = 3;
+		cx.stroke();*/
+        /*
+		function branch(length, angle, scale) {
+			cx.fillRect(0,0, 1, length);
+			if (length < 8) return;
+			cx.save();
+			cx.translate(0, length);
+			cx.rotate(-angle);
+			branch(length * scale, angle, scale);
+			cx.rotate(2 * angle);
+			branch(length * scale, angle, scale);
+			cx.restore();
+		}
+		//cx.translate(300, 0);
+		//branch(60, 0.5, 0.8);
+		cx.moveTo(30,0)
+		cx.lineTo(60,0)
+		cx.lineTo(90,30)
+		cx.lineTo(0,30)
+		cx.closePath()
+		cx.stroke()
+		*/
+
+
+		
+	</script>
+
+
+
+</body>
+</html>

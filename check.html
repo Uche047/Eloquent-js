@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script>
+	let squareWorker = new Worker("squarework.js");
+	squareWorker.addEventListener("message", event => {
+		console.log("The worker responded:", event.data);
+	});
+	squareWorker.postMessage(106);
+	squareWorker.postMessage(24);
+</script>
+</body>
+</html>

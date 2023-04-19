@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>RegExpGolf</title>
+</head>
+<body>
+<script>
+	// Creating regex patterns to match certain conditions and that only.
+	let carcatregex = /^ca(r|t)$/;
+	console.log(carcatregex.test('car'));
+	console.log(carcatregex.test('cats'));
+
+	let popprop = /^pr?op$/;
+	console.log(popprop.test('pop'));
+	console.log(popprop.test('prop'));
+
+	let fer = /^ferr(et|y|ari)$/;
+	console.log(fer.test('ferret'));
+	console.log(fer.test('ferry'));
+	console.log(fer.test('ferrari'));
+
+	let iousword = /(\w)+ious$/;
+	console.log(iousword.test('eeeeeious'));
+	let whites = /^\s+(.|,|;|:)$/
+	console.log(whites.test(' :'));
+
+	let morethanSix = /^[a-z]{7,}$/;
+	console.log(morethanSix.test('chzzyss'));
+	
+
+
+</script>
+</body>
+</html>

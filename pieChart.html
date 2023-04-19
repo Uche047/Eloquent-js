@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pie Chart</title>
+</head>
+<body>
+
+	<p>Before canvas.</p>
+	<canvas width="600" height="300"></canvas>
+	<p>After canvas</p>
+
+	<script type="text/javascript">
+		let cx = document.querySelector("canvas").getContext("2d");
+		
+		const results = [
+		{name: "Satisfied", count: 1043, color: "lightblue"},
+		{name: "Neutral", count: 563, color: "lightgreen"},
+		{name: "Unsatisfied", count: 510, color: "pink"},
+		{name: "Lala", count: 800, color: "brown"},
+		{name: "No comment", count: 175, color: "silver"}
+		];
+
+		let total = results.reduce((sum, {count}) => sum + count, 0);
+		// Start at the top 
+		let currentAngle = -0.5 * Math.PI;
+		for (let result of results) {
+			let sliceAngle = (result.count / total) * 2 * Math.PI;
+			cx.beginPath();
+			cx.arc(250, 150, 120, currentAngle, currentAngle + sliceAngle);
+			let middleAngle = currentAngle + 0.5 * sliceAngle;
+			let textX = Math.cos(middleAngle) * 150 + 255;
+			let textY = Math.sin(middleAngle) * 150 + 155;
+			currentAngle += sliceAngle;
+			cx.lineTo(250, 150);
+			console.log(textX, textY);
+			cx.font = "italic 18px Georgia";
+			cx.fillStyle = result.color;
+			cx.fillText(result.name, textX, textY);
+			// Checking how to position text
+			if (Math.cos(middleAngle) >= 1) cx.textAlign = "left";
+			else cx.textAlign = "right";
+			cx.textBaseline = "middle";
+			cx.fill();
+			console.log(cx);
+
+		} 
+		let img = document.createElement("img");
+		img.src = "img/player.png";
+		
+		
+
+
+		
+	</script>
+
+
+
+</body>
+</html>

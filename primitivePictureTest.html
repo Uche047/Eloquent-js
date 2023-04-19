@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		body {
+height: 200px;
+background: beige;
+}
+.dot {
+height: 8px; width: 8px;
+border-radius: 4px; /* rounds corners */
+background: blue;
+position: absolute;
+}
+dot { position: absolute; display: block;
+border: 2px solid red; border-radius: 50px;
+height: 100px; width: 100px; }
+
+	</style>
+</head>
+<body>
+     <script>
+     	function update(event) {
+for (let dot; dot = document.querySelector("dot");) {
+	console.log("hi");
+dot.remove();
+}
+for (let i = 0; i < event.touches.length; i++) {
+let {pageX, pageY} = event.touches[i];
+let dot = document.createElement("dot");
+dot.style.left = (pageX - 50) + "px";
+dot.style.top = (pageY - 50) + "px";
+document.body.appendChild(dot);
+}
+}
+window.addEventListener("touchstart", update);
+window.addEventListener("touchmove", update);
+window.addEventListener("touchend", update);
+/*window.addEventListener("click", event => {
+let dot = document.createElement("div");
+dot.className = "dot";
+dot.style.left = (event.pageX - 0) + "px";
+dot.style.top = (event.pageY - 0) + "px";
+document.body.appendChild(dot);
+console.log(event);
+});*/
+
+</script>
+</body>
+</html>

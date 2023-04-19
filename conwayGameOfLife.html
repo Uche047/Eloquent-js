@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Conway Game of life</title>
+</head>
+<body id="body">
+	<script type="text/javascript">
+		
+		// Script simulates conway's game of life
+
+		// Matrix class basic building blocks for the grid and structure of game of Life
+		class Matrix {
+			constructor(width, height, element = (x, y) => undefined) {
+				this.width = width;
+				this.height = height;
+				this.content = [];
+				for (let y = 0; y < height; y++) {
+					for (let x = 0; x < width; x++) {
+						this.content[y * width + x] = element(x, y);
+					}
+				}
+				
+			}
+			get(x, y) {
+				return this.content[y * this.width + x];
+			}
+			set(x, y, value) {
+				this.content[y * this.width + x] = value;
+			}
+
+		}
+
+		class MatrixIterator {
+			constructor(matrix) {
+				this.x = 0;
+				this.y = 0;
+				this.matrix = matrix;
+			}
+			next() {
+				if (this.y == this.matrix.height) return {done: true};
+				let value = {x: this.x,y: this.y,value: this.matrix.get(this.x, this.y)};
+				this.x++;
+				if (this.x == this.matrix.width) {
+					this.x = 0;
+					this.y++;
+				}
+				return {value, done: false};
+			}
+		}
+        //Adding iterator functionality
+		Matrix.prototype[Symbol.iterator] = function() {
+			return new MatrixIterator(this);
+		};
+
+		let m = 60, n = 30;  // Represents grid dimensions and can be changed for grid dimensions to expand or contract
+
+		let matrix = new Matrix(m, n, (x, y) => `false${x},${y}`); // Creating new matrix with value falsex,y
+		
+			let container = document.createElement("div"); // Creating a div element
+			// Looping through matrix to create grid
+			for (let {x, y, value} of matrix) {
+				let input = document.createElement("input");
+				let linebreak = document.createElement("br");
+				linebreak.id = "br";
+				input.type = "checkbox"; // Creating a corresponding checkbox for each matrix element
+				input.id = matrix.get(x,y).slice(5); // Creating input id false
+				container.appendChild(input); // Adding checkboxes to the div element
+
+                // Creating random pattern on load or reload
+				if (x == Math.floor(Math.random() * m) || x+1 == Math.floor(Math.random() * m) || y == Math.floor(Math.random() * n) || y+1 == Math.floor(Math.random() * n)){
+					input.checked = true;
+					console.log('checking random');
+					matrix.set(x,y,`true${x},${y}`);
+				}
+				
+			    //Adding eventListeners to checkboxes
+				input.addEventListener("change" , () => {
+					matrix.set(x,y,`${input.checked}${x},${y}`) //Updating matrix when checkboxes are checked or unchecked
+				});  
+				
+				if(x == m-1) container.appendChild(linebreak); //Adding a linebreak at the end of each row
+			}
+
+		
+		let button = document.createElement("button");
+		button.textContent = "Clickme to Next Generation";
+		let body = document.getElementById("body");
+		body.appendChild(container);
+		body.appendChild(button);
+		// Code below only runs after clicking the button
+		button.addEventListener("click", () => {
+
+			
+			let list = []; // This list would be updated with matrix values for the next generation
+			let newlist; // This list would be a copy of list for updating the checkbox elements live
+			// This loops through the matrix and searches for live neighbours and updates the list array
+			for (let {x,y,value} of matrix) {
+
+						let counter = [];
+				        let a = x + 1, b = x - 1, c = y + 1, d = y - 1, e = m - 1, f = n - 1;
+
+				        // Eight if statements to handle searching for a maximum of 8 neighbours taking care not to search beyond the grid 
+						if (true && b >= 0 && d >=0){
+							let innervalue = matrix.get(b,d);
+							if (innervalue[0] == "t") counter.push(innervalue[0])
+							
+				    	}
+				    	if(true && a <= e  && d >=0){
+				    		let innervalue = matrix.get(a,d);
+				    		if (innervalue[0] == "t") counter.push(innervalue[0])
+				    	}
+				    	if(true && a <= e && c <= f ){
+				    		let innervalue = matrix.get(a,c);
+				    		if (innervalue[0] == "t") counter.push(innervalue[0])
+				    		//console.log(innervalue, "innervalue");
+				    	}
+				    	if(true  && c <= f && b >= 0 ){
+				    		let innervalue = matrix.get(b,c);
+				    		if (innervalue[0] == "t") counter.push(innervalue[0])
+				    	}
+				    	if(true && d >= 0){
+				    		let innervalue = matrix.get(x,d);
+				    		if (innervalue[0] == "t") counter.push(innervalue[0])
+				    	}
+				    	if(true && c <= f ){
+				    		let innervalue = matrix.get(x,c);
+				    		if (innervalue[0] == "t") counter.push(innervalue[0])
+				    	}
+				    	if(true &&  a <= e){
+				    		let innervalue = matrix.get(a,y);
+				    		if (innervalue[0] == "t") counter.push(innervalue[0])
+				    	}
+				    	if(true && b >=0){
+				    		let innervalue = matrix.get(b,y);
+				    		if (innervalue[0] == "t") counter.push(innervalue[0])
+				    	}
+				        // Applying life and death rules for a live cell 
+                		if (value[0] == 't') {
+                			// Checks for 2 or 3 life neighbours
+                			if (counter.length == 3 || counter.length == 2 ) {
+
+                				list.push(`true${x},${y}`);
+                				//console.log("Hey")
+                			}
+                			
+                			else {
+                				list.push(`false${x},${y}`);
+                				//console.log('Yah')
+                			}
+                		} 
+                        // Applying life and death rules for a dead cell
+                		if (value[0] == 'f') {
+                			// Checking for 3 live neighbours
+                			if (counter.length == 3) {
+                				list.push(`true${x},${y}`);
+                				
+                			}
+                			else list.push(`false${x},${y}`);
+                		}
+
+					}
+
+					let shiftHolder;
+					
+					newlist = Array.from(list); //Saving a copy of list
+					
+                    //Updating matrix values to reflect next generation
+					for (let {x,y,value} of matrix) {
+						shiftHolder = list.shift();
+						matrix.set(x,y,shiftHolder);	
+					}
+
+		// Updating the checkboxes to reflect next generation computed
+		for (let child of Array.from(container.childNodes)) {
+			if (child.id != 'br'){
+				let item = newlist.shift();
+				if ( item[0] == "t")child.checked = true;
+				else child.checked = false;
+
+			}
+		}
+		
+		});
+
+
+	</script>
+</body>
+</html>

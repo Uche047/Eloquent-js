@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Shapes</title>
+</head>
+<body>
+	<canvas width="1000" height="1000"></canvas>
+	<script type="text/javascript">
+		let cx = document.querySelector("canvas").getContext("2d");
+		function drawTrapezoid(startx, starty) {
+			if (startx < 30) startx = 30
+			cx.moveTo(startx,starty)
+		    cx.lineTo(startx + 30, starty)
+		    cx.lineTo(startx + 60,starty + 30)
+		    cx.lineTo(startx -30 ,starty + 30)
+		    cx.closePath()
+		    cx.stroke() 
+		}
+
+		function drawDiamond() {
+			let cx1 = document.querySelector("canvas").getContext("2d")
+			cx1.fillStyle = "red"
+			cx1.save()
+			cx1.translate(50,50) // Translating
+			cx1.rotate(0.785)    // Rotating at pi / 4
+			cx1.translate(-50,-50) // Returning to start 
+			cx1.fillRect(5,25, 50, 50)
+			cx1.restore()        // Restoring canvas to initial transformation
+			
+		}
+        // This function draws a zigzag
+		function drawZigzag(startx, starty) {
+			let cx2 = document.querySelector("canvas").getContext("2d")
+			cx2.beginPath()
+			for (let y = 0; y < 200; y += 10) {
+				cx2.moveTo(startx,starty)
+				cx2.lineTo(startx +150, starty +10)
+				cx2.lineTo(startx, starty + 20)
+				starty += 20        // Increasing start position for y
+			}
+			cx.stroke()
+			
+		}
+
+		function drawSpiral() {
+			let cx3 = document.querySelector("canvas").getContext("2d")
+			let rad = 5 ,start = 0 ,stop = 1* Math.PI
+			let c1 = 500, c2 = 500
+			for (let x = 0; x < 500; x +=5) {
+				
+				cx3.beginPath()
+				cx3.arc(c1,c2,rad,start,stop)
+				start = stop
+				stop += 0.5
+				rad += 5
+				cx3.stroke()
+				
+
+				
+			}
+
+		}
+
+
+		function drawStar() {
+			let cx4 = document.querySelector("canvas").getContext("2d")
+			cx4.moveTo(500,500)
+			cx4.lineTo(500,400)
+			cx4.quadraticCurveTo(500, 500, 600, 400)
+			cx4.moveTo(500,500)
+			cx4.lineTo(600,400)
+			cx4.quadraticCurveTo(500, 500, 600, 500)
+			cx4.moveTo(500,500)
+			cx4.lineTo(600,500)
+			cx4.quadraticCurveTo(500, 500, 600, 600)
+			cx4.moveTo(500,500)
+			cx4.lineTo(600,600)
+			cx4.quadraticCurveTo(500, 500, 500, 600)
+			cx4.moveTo(500,500)
+			cx4.lineTo(500,600)
+			cx4.quadraticCurveTo(500, 500, 400, 600)
+			cx4.moveTo(500,500)
+			cx4.lineTo(400,600)
+			cx4.quadraticCurveTo(500, 500, 400, 500)
+			cx4.moveTo(500,500)
+            cx4.lineTo(400,500)
+			cx4.quadraticCurveTo(500, 500, 400, 400)
+			cx4.moveTo(500,500)
+			cx4.lineTo(400,400)
+			cx4.quadraticCurveTo(500, 500, 500, 400)
+			cx4.moveTo(500,500)
+
+			cx4.fillStyle = 'cyan'
+			cx4.fill()
+			
+
+		}
+
+		drawStar()
+
+		//drawSpiral()
+
+		//drawDiamond()
+		//drawTrapezoid(100, 10)
+		//drawZigzag(150, 0)
+		
+	</script>
+
+</body>
+</html>

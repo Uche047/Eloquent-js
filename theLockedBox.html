@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>The Locked Box</title>
+</head>
+<body>
+	<script>
+		const box = {
+			locked: true,
+			unlock() { this.locked = false; },
+			lock() { this.locked = true; },
+			_content: [],
+			get content() {
+				if (this.locked) throw new Error("Locked!");
+				return this._content;
+			}
+		};
+		function withBoxUnlocked(body) {
+			// Checking if the box object is locked
+			if (box.locked) {
+				box.unlock(); // Unlocking it
+				try {
+					body();   // Running the function 
+				}
+				finally {
+					box.lock(); // Locking the box irrespective of the result from the try block e.g in the case of an exception
+				}
+					
+			}else {
+				try {
+					body(); // Running the function
+				}
+				finally {
+					box.lock();  // Locking the box irrespective of the result from the try block
+				}	
+		}
+			}
+			
+
+		withBoxUnlocked(function() {
+			box.content.push("gold piece");
+		});
+
+		try {
+			withBoxUnlocked(function() {
+				throw new Error("Pirates on the horizon! Abort!");
+			});
+		} catch (e) {
+			console.log("Error raised:", e);
+		} 
+		console.log(box.locked);
+	</script>
+
+</body>
+</html>

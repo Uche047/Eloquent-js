@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style>
+
+	</style>
+<body>
+	<div id="checker">
+		<p data-tabname="Lagos">My Base</p>
+		<p data-tabname="Benin">Where I did my Masters</p>
+		<p data-tabname="Mbaise">This is my home town</p>
+		<p data-tabname="Ilaro">This is where I did my Nysc</p>
+	</div>
+	<script>
+		
+		function asTabs(node) {
+			//console.log(node.children);
+			node.style.display = "none"; // Hiding parent node elements 
+			let arr = Array.from(node.children); // Creating array of children from parent node
+			let button;    // declared to hold button elements for each child
+			let buttons = []; // array holding all buttons created
+
+			for (let i = 0; i < arr.length ; i++) {
+				button = document.createElement("button"); // Creating button
+				button.textContent = arr[i].getAttribute("data-tabname"); // Adding text to button from data-tabname attribute
+				buttons.push(button);
+				arr[i].style.display = "none"; // Hiding all child elements
+			}
+			// Adding buttons to the DOM
+			for (let item of buttons) document.body.appendChild(item);
+			// Adding child element to the DOM
+			for (let item of arr) document.body.appendChild(item);
+			
+			return buttonChanger(arr);
+		}
+
+		let parent = document.getElementById("checker");
+		asTabs(parent);
+	
+		// Function handling button changes
+		function buttonChanger(arr)	{
+			let clickButtons = document.querySelectorAll("button"); // Grabing all buttons
+			clickButtons = Array.from(clickButtons);
+			//console.log(clickButtons[1]);
+			for (let i=0; i < clickButtons.length; i++) {
+				clickButtons[i].addEventListener("click", event => {
+					arr.map(child => child.style.display = "none"); // Hidding all child elements on click
+					arr[i].style.display = "block"; // Displaying only selected element
+					clickButtons.map(button => button.style.background = ""); // Resetting button background
+					clickButtons[i].style.background = "yellow"; // Setting background color for clicked button
+				})
+
+			}
+		}
+
+			
+	</script>
+</body>
+</html>

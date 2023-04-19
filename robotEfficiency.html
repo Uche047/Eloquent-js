@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Robot</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<script type="text/javascript">
+		const roads = [
+		"Alice's House-Bob's House", "Alice's House-Cabin",
+		"Alice's House-Post Office", "Bob's House-Town Hall",
+		"Daria's House-Ernie's House", "Daria's House-Town Hall",
+		"Ernie's House-Grete's House", "Grete's House-Farm",
+		"Grete's House-Shop", "Marketplace-Farm",
+		"Marketplace-Post Office", "Marketplace-Shop",
+		"Marketplace-Town Hall", "Shop-Town Hall"
+		];
+
+		function buildGraph(edges){
+			let graph = Object.create(null);
+			function addEdge(from,to) {
+				if (graph[from] == null) {
+					graph[from] = [to];
+				} else {
+					graph[from].push(to);
+				}
+			}
+			for(let [from,to] of edges.map(r => r.split('-'))){
+				addEdge(from,to);
+				addEdge(to,from);
+			}
+			return graph;
+		}
+
+		const roadGraph = buildGraph(roads);
+		console.log(roadGraph);
+
+		class VillageState {
+			constructor(place,parcels){
+				this.place = place;
+				this.parcels = parcels;
+			}
+			move(destination){
+				if (!roadGraph[this.place].includes(destination)){
+					return this;
+				}else{
+					let parcels = this.parcels.map(p => {
+						if(p.place != this.place) return p;
+						return {place:destination,address:p.address};
+					}).filter(p => p.place != p.address);
+					let b = new VillageState(destination,parcels);
+					console.log('checking parcels delivery progress');
+					console.log(b.parcels);
+					return b;
+				}
+			}
+
+		}
+
+		
+
+		function runRobot(state, robot, memory){
+			for (let turn =0; ; turn++) {
+				console.log(`turn ${turn + 1}`);
+				if(state.parcels.length == 0) {
+					console.log(`Done in ${turn} turns`);
+					break;
+				}
+				let action = robot(state,memory);
+				state = state.move(action.direction);
+				memory = action.memory;
+			}
+		}
+
+		function randomPick(array){
+			let choice = Math.floor(Math.random() * array.length);
+			return array[choice];
+		}
+
+		function randomRobot(state){
+			let randomDirection = {direction:randomPick(roadGraph[state.place])}; 
+			return randomDirection;
+		}
+		
+		VillageState.random = function(parcelCount = 5) {
+			let parcels = [];
+			for (let i = 0; i < parcelCount; i++){
+				let address = randomPick(Object.keys(roadGraph));
+				let place;
+				do {
+					place = randomPick(Object.keys(roadGraph));
+				} while (place == address);
+				parcels.push({place,address});
+			}
+			let v = new VillageState("Post Office", parcels);
+			return v;
+		};
+
+		const mailRoute = ["Alice's House", "Cabin", "Alice's House", "Bob's House",
+			"Town Hall", "Daria's House", "Ernie's House",
+			"Grete's House", "Shop", "Grete's House", "Farm",
+			"Marketplace", "Post Office"];
+
+		function routeRobot(state, memory) {
+			if (memory.length == 0){
+					memory = mailRoute;
+			}
+			return {direction: memory[0], memory: memory.slice(1)};
+		}
+
+		function findRoute(graph, from , to){
+			let work = [{at:from, route:[]}];
+			
+			for (let i = 0; i < work.length; i++) {
+				let {at, route} = work[i];
+				for (let place of graph[at]) {
+					if (place == to ){
+						let r = route.concat(place); 
+						return r;
+					} 
+					if (!work.some(w => w.at == place)) {
+						work.push({at: place, route:route.concat(place)});
+					}
+					
+				}
+			}
+			
+		}
+
+		function efficientRobot(state, finalRoute){
+			
+			if (finalRoute.length == 0) {
+				console.log('state.parcels is ',state.parcels);
+				
+				for(let parcel of state.parcels){
+					if (parcel.place != state.place) {
+						let route = findRoute(roadGraph, state.place, parcel.place);
+						// Updating for the shortest routes and also accepting the first route
+						if (finalRoute.length >= route.length || finalRoute.length == 0 ){
+							finalRoute = route;
+						}
+					}
+					else {
+						let route = findRoute(roadGraph, state.place, parcel.address);
+						// Updating for the shortest routes and also accepting the first route
+						// Takes care of preference for routes going to pick up rather than deliver
+						// packages..Note the subtle equality difference
+						if (finalRoute.length > route.length || finalRoute.length == 0 ){
+							finalRoute = route;
+						}
+					}
+				}
+			}
+			return {direction: finalRoute[0], memory: finalRoute.slice(1)};
+		}
+
+		//runRobot(VillageState.random(), routeRobot, mailRoute);
+		runRobot(VillageState.random(), efficientRobot, []);
+
+
+	</script>
+
+</body>
+</html>

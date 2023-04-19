@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Quoting Style</title>
+</head>
+<body>
+	<button onclick="alert('Boom!');">Do Not Press </button>
+	<script type="text/javascript">
+		// The quoted text pattern matches singly quoted words
+		let quotedText = /'(\w+)'/g;
+		let text = "This 'daring' 'guy' is 'super' 'annoying' isn't he. Yeah but he is my 'guy' o";
+		// Replacing them with double quotes $1 represents group 1 match
+		let changed = text.replace(quotedText, '"$1"');
+		console.log(changed);
+	</script>
+</body>
+</html>

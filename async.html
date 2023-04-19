@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Asynchronous</title>
+</head>
+<body>
+<script type="module">
+	import {bigOak} from "./crow-tech";
+
+	bigOak.readStorage("food caches", caches => {
+		let firstCache = caches[0];
+		bigOak.readStorage(firstCache, info => {
+			console.log(info);
+		});
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Elements by Tag Name</title>
+</head>
+<body>
+	<div id ="first">
+		<div>
+			<p>Beauty is vain</p>
+			<p>Favour is deceitful</p>
+		</div>
+		<p>I love Jesus he is my friend</p>
+		<div>
+			<p>CHeck</p>
+		</div>
+	</div>
+	<script>
+		
+		function byTagName(node,tagName){
+			let flist = [];
+			function inner(node,tagName){
+					if (node.nodeType == Node.ELEMENT_NODE) {
+						
+						for (let child of Array.from(node.childNodes)) {
+
+							if(child.nodeName.toLowerCase() == tagName) {
+								let list = [];
+								list = list.concat(child);
+								console.log(child,list);
+								flist = flist.concat(list);
+
+							}
+							
+							inner(child,tagName);
+							
+						}
+							
+					}
+				}
+		    inner(node,tagName);
+			return flist;
+		}
+		
+		console.log(byTagName(document.body, "p"));
+	</script>
+</body>
+</html>

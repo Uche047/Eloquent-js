@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Mouse Trail</title>
+	<style>
+		body {
+			height: 200px;
+			background: beige;
+		}
+		.dot {
+			height: 18px; width: 18px;
+			border-radius: 9px; /* rounds corners */
+			background: blue;
+			position: absolute;
+		}
+
+	</style>
+</head>
+<body>
+	<script>
+		let colors = ["violet", "red", "blue", "rose", "aqua", "green", "yellow"];
+		let elements = [];
+
+		// Creating div elements and giving them different background colours
+        for (let i = 0; i < colors.length; i++) {	
+        	let dot = document.createElement("div");
+        	elements.push(dot);
+        	dot.className = "dot";
+        	dot.style.background = colors[i];
+        	document.body.appendChild(dot);
+        }
+
+        let counter = 0;
+        window.addEventListener("mousemove", event => {
+        counter++;
+        // Positioning div elements using % property to change indexes
+        elements[counter % elements.length].style.left = (event.pageX - 4) + "px";
+		elements[counter % elements.length].style.top = (event.pageY - 4) + "px";			
+        })
+        
+	</script>
+</body>
+</html>

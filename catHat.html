@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p>This is a headset <img src="headphone1.jpg" id="headset" style="position:absolute"></p>
+	<p>This is a shirt <img src="shirt.jpg" id="shirt" style="position:absolute"></p>
+	<script type="text/javascript">
+		let headset = document.getElementById("headset");
+		let shirt = document.getElementById("shirt");
+		let angle = Math.PI / 2;
+		let angle1 = Math.PI / 4;
+		function animate(time, lastTime) {
+			console.log("Current time and angle here: ",time, angle);
+			if (lastTime != null) {
+				angle += (time - lastTime) * 0.001;
+				angle1 += (time - lastTime) * 0.001;
+				console.log("This is the current time minus last time",time - lastTime);
+			}
+			//console.log('LastTime: ',lastTime);
+			headset.style.top = (Math.sin(angle1) * 500) + "px";
+			//console.log(cat.style.top);
+			headset.style.left = (Math.cos(angle1) * 1500) + "px";
+			//console.log(cat.style.left)
+			shirt.style.top = (Math.sin(angle) * 20) + "px";
+			//console.log(cat.style.top);
+			shirt.style.left = (Math.cos(angle) * 500) + "px";
+			requestAnimationFrame(newTime => {
+				console.log("Here is the newTime and time respectively: ",newTime, time);
+				animate(newTime, time);
+			});
+		}
+		requestAnimationFrame(animate);
+	</script>
+</body>
+</html>

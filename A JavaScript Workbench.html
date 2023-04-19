@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>A JavaScript Workbench</title>
+</head>
+<body>
+	<p>Hey type your code below</p>
+	<textarea style="width: 50%; height:30vh;"  id="datas"> </textarea>
+	<button>Run</button> <br>
+	<textarea style="width: 50%; height:30vh;"  id="result"></textarea>
+	<br>
+	<h1></h1>
+
+	<script type="text/javascript">
+
+	        // This script lets you write small pieces of code  which can be run but you can't use 'let' for instance and other stuff
+			let button = document.querySelector("button");
+		    
+		    
+			button.addEventListener("click", () => {
+				let datas = document.getElementById("datas");
+		        let result = document.getElementById("result");
+		        let data = datas.value;
+		        try {
+		        	// Calling anonymous function
+		        	result.textContent = String(Function("", `let s = ${data};  return s;`)());
+		        	
+		        } catch (e) {
+		        	// catching errors
+		        	result.textContent = e;
+		        	
+		        }
+			} )
+				
+		        	
+			
+		
+			
+		
+
+		
+	</script>
+
+</body>
+</html>

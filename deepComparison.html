@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<script>
+			function deepEqual(value1, value2){
+				// Checks for null values because typeof null also produces object
+				if (value1== null && value2 == null){
+					return true;
+				}
+				else if (value1== null || value2 == null) {
+					return false;
+				}
+				else if (typeof(value1) && typeof(value2) =='object'){
+					let arr1 = Object.keys(value1);
+					let arr2 = Object.keys(value2);
+					// Checking that the objects have the same number of properties
+					if (arr1.length !== arr2.length){
+						return false;
+					}
+					else {
+						// Checking that all properties have the same value 
+						// Deep equal for objects
+						for(var property of arr1){
+							if (property in value2){
+								if(value1[property] !== value2[property]){
+									return false;
+								}
+							}
+							else {
+								return false;	
+							}
+						return true;
+					}
+					}
+				}
+				else {
+					// Peforming normal comparison
+					if (value1 === value2) {
+						return true;
+					}
+					else {
+						return false;
+					}
+				}
+
+			}
+			console.log(deepEqual('giraffe', 'giraff'));
+			
+		</script>
+	</body>
+</html>

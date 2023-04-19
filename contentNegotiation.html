@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Content Negotiation</title>
+</head>
+<body>
+	<script type="text/javascript">
+		// This code sends requests to a site for files in specific format and consoles the response received
+		fetch("https://eloquentjavascript.net/author", {headers: {Accept: "text/plain"}})
+        .then(resp => resp.text())
+        .then(console.log)
+        fetch("https://eloquentjavascript.net/author", {headers: {Accept: "text/html"}})
+        .then(resp => resp.text())
+        .then(console.log)
+        fetch("https://eloquentjavascript.net/author", {headers: {Accept: "application/json"}})
+        .then(resp => resp.text())
+        .then(console.log)
+        // sending a request for an unsupported file format.
+        fetch("https://eloquentjavascript.net/author", {headers: {Accept: "application/rainbows+unicorns"}})
+        .then(resp => console.log(resp.status));
+        
+
+
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Table</title>
+</head>
+<body>
+	<div id="mountains"></div>
+	<script>
+		let mountains = [
+		{name:'name', height:'height', place:'place'},
+		{name:'Kilimanjaro', height:5895, place:'Tanzania'},
+		{name:'Edna', height:6794, place:'Italy'},
+		{name:'Cameroun', height:4000, place:'Cameroun'},
+		{name:'Everest', height:8848, place:'China'},
+		]
+
+		let table = document.createElement('table'); // Creating a table element
+		for (let mountain of mountains) {
+			if (mountain == mountains[0]){
+				let row = document.createElement('tr'); // Creating a row element 
+				for (let key of Object.keys(mountain)) {
+					let head = document.createElement('th');// table head from object 1 in array
+					head.appendChild(document.createTextNode(mountain[key]));//adding array content 
+					row.appendChild(head); // adding table header
+				}
+				table.appendChild(row); // adding row to table
+			}
+			else {
+				let row = document.createElement('tr');
+				for (let key of Object.keys(mountain)) {
+					let data = document.createElement('td'); // table data from object 2 in the array
+					data.appendChild(document.createTextNode(mountain[key])); //adding array content
+					row.appendChild(data); // adding table content
+				}
+				table.appendChild(row); // adding row to table
+			}
+					
+		}
+
+		let mounts = document.getElementById('mountains'); // Grabbing div with id equals to mountains
+		mounts.appendChild(table); // Adding the table
+
+		let data = document.getElementsByTagName('td'); // Grabbing all table data aside table head
+		let header = document.getElementsByTagName('th');
+		header[0].style.backgroundColor = 'red';
+		for (let element of Array.from(header)) element.style.backgroundColor = 'red';
+		for (let i=0; i < data.length; i++ ) {
+			if (Number(data[i].firstChild.nodeValue)){ // checking for number values
+				data[i].style.textAlign = 'right'; // Aligning cells with number values right
+				data[i].style.backgroundColor = 'purple';
+				data[i].style.color = 'snow';
+				//console.log(data[i].firstChild.nodeValue);
+			}
+			else{
+				data[i].style.backgroundColor = 'green';
+				data[i].style.color = 'snow';
+			}
+	
+
+		}
+
+
+	</script>
+</body>
+</html>

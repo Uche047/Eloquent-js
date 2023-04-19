@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	class PGroup{
+		constructor(){
+			this.empty = [];
+		}
+		// Adds a value to the Group or pseudoset
+		add(value){
+			if (this.empty.length == 0){
+				this.empty.push(value);
+			}else{
+				let newSet = this.empty.concat(value);
+				let newPsuedoset = new PGroup();
+				newPsuedoset.empty = newSet;
+				return newPsuedoset
+				
+			} 
+		}
+
+		// Deletes a valuenewPsuedoset.pseudoset = newSet;
+		delete(value){
+			
+			let newSet = this.empty.filter(item => item != value);
+			let newPsuedoset = new PGroup();
+			newPsuedoset.empty = newSet;
+			return newPsuedoset;
+			
+
+			
+		}
+		// Checks if value exists in the giving pseudoset
+		has(value){
+			return(this.empty.includes(value));
+		} 
+		get(index){
+			if (this.empty[index] != undefined){
+				return this.empty[index];
+			}
+		}
+		// Creates a new Group when passed an iterable
+		static from(iterable){
+			let newPsuedoset = new Group();
+			for (let item of iterable){
+				newPsuedoset.add(item);
+			}
+			return newPsuedoset;
+		}
+	}
+	// Iterator interface
+	class GroupIterator{
+		constructor(group){
+			this.index = 0
+			this.group = group;
+		}
+		next(){
+			// Checking if the index is equal to the length of set 
+			// i.e we have looped through all members of the set
+			if (this.index == this.group.empty.length) return {done:true};
+			// Getting each value by index in pseudoset
+			let value = this.group.get(this.index);
+			this.index++;
+			return {value,done:false};
+		}
+	}
+	// Attaching our iterator interface to our Group class
+	PGroup.prototype[Symbol.iterator] = function(){
+		return new GroupIterator(this);
+	}
+	let ucheGroup = new PGroup()
+	ucheGroup.empty = [2,6,8];
+	let de = ucheGroup.delete(2);
+	console.log(de.empty)
+	for (let item of ucheGroup ){
+		console.log(item);
+	}
+</script>
+</body>
+</html>

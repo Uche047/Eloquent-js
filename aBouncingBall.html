@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>A Bouncing Ball</title>
+</head>
+<body>
+	<canvas width="400" height="400"></canvas>
+	<script type="text/javascript">
+	var Vec = class Vec {
+		constructor(x, y) {
+			this.x = x; this.y = y;
+		}
+		plus(other) {
+			return new Vec(this.x + other.x, this.y + other.y);
+		}
+		times(factor) {
+			return new Vec(this.x * factor, this.y * factor);
+		}
+	}
+
+	var Ball = class Ball {
+		constructor(pos, speed) {
+			this.pos = pos;
+			this.speed = speed;
+		}
+		get type() { return "ball"; }
+		static create(pos) {
+			return new Ball(pos.plus(new Vec(0, 0)),new Vec(3, 4));
+		}
+	}
+
+	function runAnimation(frameFunc) {
+		let lastTime = null;
+		function frame(time) {
+			if (lastTime != null) {
+				//let timeStep = Math.min(time - lastTime, 100) * 1;
+				let timeStep = (time - lastTime) * 0.1;
+				if (frameFunc(timeStep) === false) return;
+			}
+			lastTime = time;
+			requestAnimationFrame(frame);
+		}
+		requestAnimationFrame(frame);
+	}
+
+    let myBall = Ball.create(new Vec(10,90));
+	runAnimation((time) => {
+		let cx = document.querySelector("canvas").getContext("2d");
+		// Clearing the canvas so that the ball is always drawn on the updated position
+		cx.clearRect(0,0, 400,400); 
+
+	    let width = 400;
+	    let height = 400;
+	    let radius = 10;
+
+	    // Drawing rectangle to serve as container for bouncing ball
+	    cx.strokeRect(0,0, width, height);
+	    cx.fillStyle = "purple";
+        cx.fillRect(0,0, width, height);
+		
+
+        // Checking for horizontal walls and inverting speed in horizontal direction
+		if (myBall.pos.x < 0 || myBall.pos.x >= 390 ) {
+			let invertedSpeedX = myBall.speed.x * -1;
+			myBall.speed.x = invertedSpeedX;
+		}
+        // Checking for vertical walls and inverting speed in vertical direction
+		if (myBall.pos.y < 0 || myBall.pos.y >= 390 ) {
+			let invertedSpeedY = myBall.speed.y * -1;
+			myBall.speed.y = invertedSpeedY;
+		}
+
+
+		//Drawing Ball
+		cx.beginPath();
+		cx.arc(myBall.pos.x,myBall.pos.y,radius,0,7);
+
+        let color = "snow";
+		cx.fillStyle = color;
+		cx.fill();
+
+
+		let displacement = myBall.speed.times(time);
+		myBall.pos = myBall.pos.plus(displacement); //Updating ball position
+
+
+    });
+
+
+
+
+	
+	
+
+</script>
+</body>
+</html>
